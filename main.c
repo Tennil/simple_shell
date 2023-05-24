@@ -96,6 +96,8 @@ int _empty_checker(char *str)
 		return (0);
 }
 
+
+
 /**
  * main - function that initializes simple shell
  * @ac: argument count of the shell
@@ -105,7 +107,7 @@ int _empty_checker(char *str)
  */
 int main(int ac, char **av, char **env)
 {
-	char *str, *strCpy, **array;
+	char *o_str, *str, *strCpy, **array;
 	int nCmds = 0;
 	ssize_t rVal;
 	size_t n = 0;
@@ -114,29 +116,31 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	while (1)
 	{
-		n = 0;
-		str = NULL;
-		strCpy = NULL;
-		nCmds++;
+		n = 0, o_str = NULL, strCpy = NULL,	nCmds++;
 		if (isatty(STDIN_FILENO) == 1)
 			_prompt();
 		signal(SIGINT, control_c);
-		rVal = get_line(&str, &n, stdin);
+		rVal = get_line(&o_str, &n, stdin);
 		if (rVal == -1 || rVal == EOF)
-			return (control_d(str));
-		if (str[0] == '\n' || (_empty_checker(str)) == 0)
+			return (control_d(o_str));
+		if (o_str[0] == '\n' || (_empty_checker(o_str)) == 0)
 		{
-			free(str);
+			free(o_str);
 			continue;
 		}
-		str[_strcspn(str, "\n")] = '\0';
+		o_str[_strcspn(o_str, "\n")] = '\0';
+		str = _rmComments(o_str);
+		if (str == NULL)
+		{
+			free(o_str);
+			continue;
+		}
 		strCpy = rea_lloc(str);
 		_strcpy(strCpy, str);
 		array = _tokenize(strCpy);
 		if (array == NULL)
 		{
-			free(str);
-			free(strCpy);
+			free(str), free(strCpy);
 			return (0);
 		}
 		f(array, env, av, str, strCpy, nCmds);

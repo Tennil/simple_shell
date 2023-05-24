@@ -70,5 +70,6 @@ void *_realloc(void *ptr, unsigned int o_size, unsigned int n_size);
 void mem_cpy(void *newptr, const void *ptr, unsigned int size);
 int _isalpha(int c);
 int _empty_checker(char *str);
+char *_rmComments(char *o_str);
 
 #endif
