@@ -17,7 +17,7 @@ int _inExit(char **array, char *str, char *strCpy, int nCmds)
 	if (array[1] == NULL)
 	{
 		_memfree(array, str, strCpy);
-		exit(1);
+		exit(0);
 	}
 	else
 	{
@@ -35,6 +35,6 @@ int _inExit(char **array, char *str, char *strCpy, int nCmds)
 			return (0);
 		}
 		_memfree(array, str, strCpy);
-		_exit(i);
+		exit(i);
 	}
 }
